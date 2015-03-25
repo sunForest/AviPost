@@ -11,4 +11,4 @@ before_script:
     - psql -d travis_ci_test -c 'CREATE EXTENSION postgis' -U postgres
     - cd avipost
 script:
-    python manage.py test avipost.settings.travis_ci
+    python manage.py test --settings=avipost.settings.travis_ci
