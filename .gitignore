@@ -5,4 +5,5 @@ lib/
 *.DS_Store
 *.pyc
 .idea/
+.bash_profile
 
