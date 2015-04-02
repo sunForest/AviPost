@@ -6,4 +6,4 @@ lib/
 *.pyc
 .idea/
 .bash_profile
-
+.coverage
