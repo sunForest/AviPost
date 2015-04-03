@@ -14,7 +14,7 @@ before_script:
     - psql -d travis_ci_test -c 'CREATE EXTENSION postgis' -U postgres
     - cd avipost
 script:
-    python manage.py test --settings=avipost.settings.travis_ci
+    coverage run --source='.' manage.py test --settings=avipost.settings.travis_ci
 after_success:
     coveralls
 
