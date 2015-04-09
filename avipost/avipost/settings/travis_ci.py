@@ -6,5 +6,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'travis_ci_test',
+        'ATOMIC_REQUESTS': True,
     }
 }
