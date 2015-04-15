@@ -7,3 +7,4 @@ lib/
 .idea/
 .bash_profile
 .coverage
+.bashrc
