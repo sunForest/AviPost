@@ -4,8 +4,8 @@ from .models import Postcard
 class PostcardAPITests(TestCase):
 
     def setUp(self):
-        Postcard.objects.get_or_create(content='hello1')
-        Postcard.objects.get_or_create(content='hello2')
+        Postcard.objects.get_or_create(message='hello1')
+        Postcard.objects.get_or_create(message='hello2')
         self.create_read_url = '/postcards/'
 
     def test_list(self):
