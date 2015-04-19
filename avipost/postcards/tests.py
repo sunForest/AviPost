@@ -2,6 +2,7 @@ import json
 from django.test import TestCase
 from .models import Postcard
 
+
 class PostcardAPITests(TestCase):
 
     def setUp(self):
@@ -18,4 +19,3 @@ class PostcardAPITests(TestCase):
         self.assertEqual(postcards[1]['message'], 'hello2')
         self.assertRegexpMatches(postcards[0]['cover'], r'images/placeholder.jpg$')
         self.assertRegexpMatches(postcards[1]['cover'], r'images/placeholder.jpg$')
-        #self.assertContains(response, 'hello2')
