@@ -19,3 +19,16 @@ class PostcardAPITests(TestCase):
         self.assertEqual(postcards[1]['message'], 'hello2')
         self.assertRegexpMatches(postcards[0]['cover'], r'images/placeholder.jpg$')
         self.assertRegexpMatches(postcards[1]['cover'], r'images/placeholder.jpg$')
+
+    def test_create(self):
+        post = {'message': 'A short and warm greeting.'}
+        response = self.client.post(self.create_read_url, post)
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Postcard.objects.count(), 3)
+
+
+    def test_create_should_fail_for_long_messages(self):
+        post = {'message': 'This is definitely too long.'*10}
+        response = self.client.post(self.create_read_url, post)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(Postcard.objects.count(), 2)
