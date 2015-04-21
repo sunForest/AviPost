@@ -6,7 +6,7 @@ addons:
     postgresql: "9.3"
 sudo: required
 install:
-    - sudo pip install -r requirements.txt
+    - sudo pip install -r requirements/ci.txt
 before_script:
     - psql -c 'CREATE DATABASE travis_ci_test;' -U postgres
     - psql -d travis_ci_test -c 'CREATE EXTENSION postgis' -U postgres
