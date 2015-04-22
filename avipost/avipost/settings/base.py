@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from unipath import Path
 from django.core.exceptions import ImproperlyConfigured
 
 def get_env_variable(var_name):
@@ -20,7 +21,7 @@ def get_env_variable(var_name):
         error_msg = "The %s environment variable is not set" % var_name
         raise ImproperlyConfigured(error_msg)
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = Path(__file__).ancestor(3)
 
 
 # Quick-start development settings - unsuitable for production
@@ -85,4 +86,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+FILE_UPLOAD_PERMISSIONS = 0644

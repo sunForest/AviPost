@@ -1,6 +1,9 @@
 import json
+import os
 from django.test import TestCase
-from .models import Postcard
+from django.conf import settings
+from postcards.models import Postcard
+
 
 
 class PostcardAPITests(TestCase):
@@ -22,7 +25,7 @@ class PostcardAPITests(TestCase):
         response =  self.client.get(self.detail_url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '"message":"hello1"')
-        self.assertContains(response, '/media/images/placeholder.jpg')
+        self.assertContains(response, '/media/placeholder.jpg')
         self.assertContains(response, '"sender":"demo"')
 
     def test_create(self):
@@ -41,3 +44,21 @@ class PostcardAPITests(TestCase):
         response = self.client.delete(self.detail_url)
         self.assertEqual(response.status_code, 204)
         self.assertEqual(Postcard.objects.count(), 1)
+
+
+class FileUploadTest(TestCase):
+
+    def setUp(self):
+        self.create_url = '/postcards/'
+
+    def tearDown(self):
+        # delete the uploaded image
+        image_path = os.path.join(settings.BASE_DIR, 'media', 'test_image.jpg')
+        os.remove(image_path)
+
+    def test_file_uploading(self):
+        with open('postcards/tests/test_image.jpg') as fp:
+            post = {'message': 'test image uploading',
+                'cover': fp}
+            response = self.client.post(self.create_url, post)
+            self.assertEqual(response.status_code, 201)
