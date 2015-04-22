@@ -6,4 +6,4 @@ class PostcardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Postcard
-        fields = ('message', 'cover',)
+        fields = ('message', 'cover', 'sender',)
