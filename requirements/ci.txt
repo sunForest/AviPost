@@ -8,3 +8,4 @@ docopt==0.6.2
 psycopg2==2.6
 requests==2.6.0
 wsgiref==0.1.2
+Unipath==1.1
