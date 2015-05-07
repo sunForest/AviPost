@@ -8,7 +8,6 @@ machine:
 database:
   post:
     - psql -c 'CREATE DATABASE travis_ci;'
-    - psql -d circle_test -c 'CREATE EXTENSION travis_ci'
     - psql -c "CREATE EXTENSION postgis;" -d travis_ci
 
 ## Customize test commands
