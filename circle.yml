@@ -26,4 +26,4 @@ test:
     - docker run --net="host" avipost python avipost/manage.py migrate --settings=avipost.settings.ci
     # - docker run --name=api -p 3001:80 -d avipost
   override:
-    - docker run --net="host" avipost python avipost/manage.py test
+    - docker run --net="host" avipost python avipost/manage.py test --settings=avipost.settings.ci
