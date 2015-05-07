@@ -1,0 +1,21 @@
+## Customize the test machine
+machine:
+  python:
+    version: 2.7.6
+  services:
+    - docker
+
+database:
+  post:
+    - psql -c 'CREATE DATABASE travis_ci;'
+    - psql -d circle_test -c 'CREATE EXTENSION travis_ci'
+    - psql -c "CREATE EXTENSION postgis;" -d travis_ci
+
+## Customize test commands
+test:
+  pre:
+    - docker build -t avipost .
+    - docker run --net="host" python avipost/manage.py migrate --settings=avipost.settings.travis_ci
+    # - docker run --name=api -p 3001:80 -d avipost
+  override:
+    - docker run python avipost/manage.py test

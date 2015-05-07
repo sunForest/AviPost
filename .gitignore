@@ -8,3 +8,4 @@ lib/
 .bash_profile
 .coverage
 .bashrc
+.*.sw*
