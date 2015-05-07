@@ -4,6 +4,7 @@ FROM python:2.7
 RUN apt-get update && \
 apt-get install -y \
 	libpq-dev \
+    libgeos-dev \
 	nginx
 
 RUN mkdir -p /usr/src/app
