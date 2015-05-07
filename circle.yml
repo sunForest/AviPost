@@ -5,6 +5,15 @@ machine:
   services:
     - docker
 
+      ## Cache base docker image (python:2.7) to speed up rebuilding
+dependencies:
+  cache_directories:
+    - "~/docker"
+
+  override:
+    - mkdir -p ~/docker
+    - if [[ -e ~/docker/base.tar ]]; then docker load -i ~/docker/base.tar; else docker pull python:2.7 && docker save python:2.7 > ~/docker/base.tar; fi
+
 database:
   post:
     - psql -c 'CREATE DATABASE avipost_ci;'
@@ -14,6 +23,7 @@ database:
 test:
   pre:
     - docker build -t avipost .
+    - docker run --net="host" avipost ls
     - docker run --net="host" avipost python avipost/manage.py migrate --settings=avipost.settings.ci
     # - docker run --name=api -p 3001:80 -d avipost
   override:
