@@ -7,7 +7,9 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'travis_ci_test',
+        'NAME': 'avipost_ci',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
         'ATOMIC_REQUESTS': True,
     }
 }
