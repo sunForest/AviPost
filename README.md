@@ -1,7 +1,6 @@
 # AviPost
 
-[![Circle CI](https://circleci.com/gh/sunForest/AviPost.svg?style=shield)](https://circleci.com/gh/sunForest/AviPost)  
-[![Coverage Status](https://coveralls.io/repos/sunForest/AviPost/badge.svg?branch=master)](https://coveralls.io/r/sunForest/AviPost?branch=master)
+[![Circle CI](https://img.shields.io/circleci/project/sunForest/AviPost.svg)](https://circleci.com/gh/sunForest/AviPost) [![Coverage Status](https://img.shields.io/coveralls/sunForest/AviPost/master.svg)](https://coveralls.io/r/sunForest/AviPost?branch=master)
 
 
 ## Build Instruction for Development
