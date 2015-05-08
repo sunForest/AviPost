@@ -5,6 +5,10 @@ machine:
   services:
     - docker
 
+dependencies:
+  pre:
+    - pip install -r requirements/ci.txt
+
 database:
   post:
     - psql -c 'CREATE DATABASE avipost_ci;'
@@ -13,12 +17,13 @@ database:
 ## Customize test commands
 test:
   pre:
+    # set up test database
+    - python avipost/manage.py migrate --settings=avipost.settings.ci
+    # e2e test
     - docker build -t avipost .
-    - docker run --net="host" avipost python avipost/manage.py migrate --settings=avipost.settings.ci
     # - docker run --name=api -p 3001:80 -d avipost
   override:
-    - docker run --net="host" avipost coverage run --source='.' avipost/manage.py test --settings=avipost.settings.ci
+    - coverage run --source='.' avipost/manage.py test --settings=avipost.settings.ci
   post:
-    - docker run avipost coverage html -d coverage_report
-    - docker cp avipost:coverage_report $CIRCLE_ARTIFACTS
-    - docker run --net="host" avipost coveralls
+    - coverage html -d $CIRCLE_ARTIFACTS
+    - coveralls
