@@ -19,4 +19,4 @@ test:
   override:
     - docker run --net="host" avipost coverage run --source='.' avipost/manage.py test --settings=avipost.settings.ci
   post:
-    coveralls
+    - docker run --net="host" avipost coveralls
