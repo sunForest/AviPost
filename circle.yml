@@ -4,6 +4,8 @@ machine:
     version: 2.7.6
   services:
     - docker
+  environment:
+    COVERALLS_REPO_TOKEN: rE9UQYri7oXINFzS6eJ3a0ssUJqLL8bg0
 
 dependencies:
   pre:
