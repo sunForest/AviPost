@@ -19,6 +19,6 @@ test:
   override:
     - docker run --net="host" avipost coverage run --source='.' avipost/manage.py test --settings=avipost.settings.ci
   post:
-    - docker run avipost coverage -d coverage_report
-    - docker cp avipost:coverage $CIRCLE_ARTIFACTS
+    - docker run avipost coverage html -d coverage_report
+    - docker cp avipost:coverage_report $CIRCLE_ARTIFACTS
     - docker run --net="host" avipost coveralls
