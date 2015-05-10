@@ -15,4 +15,7 @@ WORKDIR /usr/src/app
 ADD . /usr/src/app/
 RUN pip install -r requirements/prod.txt
 
+# restart nginx to load the config
+RUN service nginx stop
+
 CMD supervisord -c /etc/supervisord.conf -n
