@@ -23,7 +23,7 @@ test:
     - python avipost/manage.py migrate --settings=avipost.settings.ci
     # e2e test
     - docker build -t avipost .
-    - docker run --name=api -p 80:80 -d avipost
+    - docker run --name=api --net='host' -p 80:80 -d avipost
   override:
     - coverage run --source='.' avipost/manage.py test --settings=avipost.settings.ci
   post:
