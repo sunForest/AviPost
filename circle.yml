@@ -22,7 +22,7 @@ test:
     # set up test database
     - python avipost/manage.py migrate --settings=avipost.settings.ci
     # e2e test
-    - docker build -t avipost .
+    - docker build -t avipost -p 5432:5432 .
     # - docker run --name=api -p 3001:80 -d avipost
   override:
     - coverage run --source='.' avipost/manage.py test --settings=avipost.settings.ci
