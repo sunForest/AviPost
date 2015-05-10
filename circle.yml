@@ -27,5 +27,6 @@ test:
   override:
     - coverage run --source='.' avipost/manage.py test --settings=avipost.settings.ci
   post:
+    - curl http://127.0.0.1/postcards/
     - coverage html -d $CIRCLE_ARTIFACTS
     - coveralls
