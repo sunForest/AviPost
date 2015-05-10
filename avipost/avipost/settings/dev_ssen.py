@@ -10,7 +10,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'avipost',
         'USER': 'geodjango',
-        'PASSWORD': 'X2ekaerp',
+        'PASSWORD': get_env_variable('DB_PASSWORD'),
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
