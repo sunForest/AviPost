@@ -10,3 +10,9 @@ psycopg2==2.6
 requests==2.6.0
 wsgiref==0.1.2
 Unipath==1.1
+behave==1.2.5
+sure==1.2.12
+inflection==0.3.1
+json-schema-generator==0.3
+jsonschema==0.8.0
+django-autofixture==0.10.0
