@@ -26,7 +26,7 @@ test:
     - docker run --name=api --net='host' -p 80:80 -d avipost
   override:
     - coverage run --source='.' avipost/manage.py test --settings=avipost.settings.ci
+    - behave -D manager=avipost/manage.py -D base_url=http://127.0.0.1 e2e/features/ 
   post:
-    - curl http://127.0.0.1/postcards/
     - coverage html -d $CIRCLE_ARTIFACTS
     - coveralls
