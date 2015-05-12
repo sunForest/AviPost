@@ -12,6 +12,7 @@ from json_schema_generator import SchemaGenerator
 from jsonschema import validate
 
 from _fixture import Fixture
+from _lazy_request import LazyRequest
 
 
 # supress requests logging
@@ -19,42 +20,39 @@ import logging
 logging.getLogger("requests").setLevel(logging.WARNING)
 
 
-@given('server has {count:d} {item}')
+@given('server has (?P<count>\d+) (?P<item>\S+)')
 def step_impl(context, count, item):
     Fixture(
         context.config.userdata.get('manager')
     ).load_data(singularize(item), count)
 
 
-@when('GET "{url:S}"')
-def step_impl(context, url):
+@when('(?P<verb>GET|POST|PUT|DEL) "(?P<rel_url>/\S+)"')
+def step_impl(context, verb, rel_url):
     base_url = context.config.userdata.get('base_url')
-    context.response = requests.get(urljoin(base_url, url))
-    print(context.response.text)
-
-@when('POST "{url:S}" with params {params} and file "{image}"')
-def step_impl(context, url, params, image):
-    # refactory this
-    base_url = context.config.userdata.get('base_url')
-    attrs = json.loads(params)
-    headers = {'Content-Type': 'multipart/form-data'}
-    with open(image) as fp:
-        files = {
-            'cover': fp
-        }
-        context.response = requests.post(urljoin(base_url, url), 
-            files=files, data=attrs)
+    context.request = LazyRequest(verb, urljoin(base_url, rel_url))
 
 
+@when('with file "(?P<name>\S+)" as (?P<field>\S+)')
+def step_impl(context, name, field):
+    context.request.add_file(name, field)
 
-@then('request will {:w}({code:d})')
-def step_impl(context, _, code):
-    context.response.status_code.should.equal(code)
+
+@when('with data')
+def step_impl(context):
+    context.request.add_data(json.loads(context.text))
+
+@then('request will (?P<state>\S+) for (?P<code>\d+)')
+def step_impl(context, state, code):
+    context.response = context.request.send()
+    context.response.status_code.should.equal(int(code))
+    if code.startswith('2'):
+        state.should.equal('success')
 
 
-@then('return {count:d} items')
+@then('return (?P<count>\d+) items')
 def step_impl(context, count):
-    assert len(context.response.json()).should.equal(count)
+    assert len(context.response.json()).should.equal(int(count))
 
 
 @then('is like')
