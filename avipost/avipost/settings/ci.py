@@ -1,17 +1,8 @@
-from .base import *
+""" 
+Complete settings for ci
+= ci_stubbed_prod settings  + extra ci environments
 
-SECRET_KEY = 'w%@7ljsrq9zrajqjh*s(k+tf%qgpasol*vmx8nu&83dz4ft5vz'
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+"""
+from .ci_stubbed_prod import *
 
 INSTALLED_APPS += ('autofixture',)
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'avipost_ci',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-        'ATOMIC_REQUESTS': True,
-    }
-}

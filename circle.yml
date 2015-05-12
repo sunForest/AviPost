@@ -6,6 +6,7 @@ machine:
     - docker
   environment:
     COVERALLS_REPO_TOKEN: rE9UQYri7oXINFzS6eJ3a0ssUJqLL8bg0
+    DJANGO_SETTINGS_MODULE: avipost.settings.ci
 
 dependencies:
   pre:
@@ -20,13 +21,14 @@ database:
 test:
   pre:
     # set up test database
-    - python avipost/manage.py migrate --settings=avipost.settings.ci
+    - python avipost/manage.py migrate
     # e2e test
     - docker build -t avipost .
-    - docker run --name=api --net='host' -p 80:80 -d avipost
+    - docker run --name=api --net='host' -p 80:80 -e "DJANGO_SETTINGS_MODULE=avipost.settings.ci_stubbed_prod" -d avipost
   override:
-    - coverage run --source='.' avipost/manage.py test --settings=avipost.settings.ci
+    - coverage run --source='.' avipost/manage.py test
     - behave -D manager=avipost/manage.py -D base_url=http://127.0.0.1 e2e/features/ 
   post:
     - coverage html -d $CIRCLE_ARTIFACTS
     - coveralls
+    - docker logs api
