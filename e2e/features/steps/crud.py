@@ -1,3 +1,4 @@
+import json
 from urlparse import urljoin
 
 from behave import given, when, then
@@ -30,6 +31,20 @@ def step_impl(context, url):
     base_url = context.config.userdata.get('base_url')
     context.response = requests.get(urljoin(base_url, url))
     print(context.response.text)
+
+@when('POST "{url:S}" with params {params} and file "{image}"')
+def step_impl(context, url, params, image):
+    # refactory this
+    base_url = context.config.userdata.get('base_url')
+    attrs = json.loads(params)
+    headers = {'Content-Type': 'multipart/form-data'}
+    with open(image) as fp:
+        files = {
+            'cover': fp
+        }
+        context.response = requests.post(urljoin(base_url, url), 
+            files=files, data=attrs)
+
 
 
 @then('request will {:w}({code:d})')
