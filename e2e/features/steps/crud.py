@@ -38,7 +38,7 @@ def step_impl(context, rel_url):
 
 @when('with file "{name:S}" as {field:S}')
 def step_impl(context, name, field):
-    context.request.add_file(name, field)
+    context.request.add_file(context.file_path(name), field)
 
 
 @when('with data')
