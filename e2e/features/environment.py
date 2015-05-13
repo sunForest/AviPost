@@ -2,7 +2,6 @@
 Hooks for running tests
 """
 from urlparse import urljoin
-import behave
 import os
 
 from steps._fixture import Fixture
@@ -27,6 +26,7 @@ def before_all(context):
         lambda rel: urljoin(context.config.userdata.get('base_url'), rel)
     )
     context.file_path = get_file_path
+
 
 def before_scenario(context, _):
     clean_db(context)
