@@ -1,5 +1,4 @@
 import json
-from urlparse import urljoin
 
 from behave import given, when, then
 # implicitly used
@@ -20,20 +19,24 @@ import logging
 logging.getLogger("requests").setLevel(logging.WARNING)
 
 
-@given('server has (?P<count>\d+) (?P<item>\S+)')
+@given('server has {count:d} {item:S}')
 def step_impl(context, count, item):
     Fixture(
         context.config.userdata.get('manager')
     ).load_data(singularize(item), count)
 
 
-@when('(?P<verb>GET|POST|PUT|DEL) "(?P<rel_url>/\S+)"')
-def step_impl(context, verb, rel_url):
-    base_url = context.config.userdata.get('base_url')
-    context.request = LazyRequest(verb, urljoin(base_url, rel_url))
+@when('GET "{rel_url:S}"')
+def step_impl(context, rel_url):
+    context.request = LazyRequest('GET', context.url(rel_url))
 
 
-@when('with file "(?P<name>\S+)" as (?P<field>\S+)')
+@when('POST "{rel_url:S}"')
+def step_impl(context, rel_url):
+    context.request = LazyRequest('POST', context.url(rel_url))
+
+
+@when('with file "{name:S}" as {field:S}')
 def step_impl(context, name, field):
     context.request.add_file(name, field)
 
@@ -42,17 +45,17 @@ def step_impl(context, name, field):
 def step_impl(context):
     context.request.add_data(json.loads(context.text))
 
-@then('request will (?P<state>\S+) for (?P<code>\d+)')
+@then('request will {state:S} for {code:d}')
 def step_impl(context, state, code):
     context.response = context.request.send()
-    context.response.status_code.should.equal(int(code))
-    if code.startswith('2'):
+    context.response.status_code.should.equal(code)
+    if str(code).startswith('2'):
         state.should.equal('success')
 
 
-@then('return (?P<count>\d+) items')
+@then('return {count:d} items')
 def step_impl(context, count):
-    assert len(context.response.json()).should.equal(int(count))
+    assert len(context.response.json()).should.equal(count)
 
 
 @then('is like')

@@ -1,12 +1,10 @@
 """
 Hooks for running tests
 """
+from urlparse import urljoin
 import behave
 
 from steps._fixture import Fixture
-
-
-behave.use_step_matcher('re')
 
 
 def clean_db(context):
@@ -14,6 +12,11 @@ def clean_db(context):
         context.config.userdata.get('manager')
     ).clean_db()
 
+
+def before_all(context):
+    context.url = (
+        lambda rel: urljoin(context.config.userdata.get('base_url'), rel)
+    )
 
 def before_scenario(context, _):
     clean_db(context)
