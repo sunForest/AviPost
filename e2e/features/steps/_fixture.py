@@ -40,7 +40,8 @@ class Fixture(object):
 
         """
         self.exec_manage(
-            'loadtestdata', 'postcards.{0}:{1}'.format(model, count)
+            'loadtestdata', 'postcards.{0}:{1}'.format(model, count),
+            '--overwrite-defaults'
         )
 
 
