@@ -4,13 +4,11 @@ from behave import given, when, then
 # implicitly used
 import sure
 from inflection import singularize
-import requests
 from json_schema_generator import SchemaGenerator
 # We use this instead of validator from json_schema_generator
 # because its error reports are far better
 from jsonschema import validate
 
-from _fixture import Fixture
 from _lazy_request import LazyRequest
 
 
@@ -21,24 +19,22 @@ logging.getLogger("requests").setLevel(logging.WARNING)
 
 @given('server has {count:d} {item:S}')
 def step_impl(context, count, item):
-    Fixture(
-        context.config.userdata.get('manager')
-    ).load_data(singularize(item), count)
+    context.helpers.load_data(singularize(item), count)
 
 
 @when('GET "{rel_url:S}"')
 def step_impl(context, rel_url):
-    context.request = LazyRequest('GET', context.url(rel_url))
+    context.request = LazyRequest('GET', context.helpers.url(rel_url))
 
 
 @when('POST "{rel_url:S}"')
 def step_impl(context, rel_url):
-    context.request = LazyRequest('POST', context.url(rel_url))
+    context.request = LazyRequest('POST', context.helpers.url(rel_url))
 
 
 @when('with file "{name:S}" as {field:S}')
 def step_impl(context, name, field):
-    context.request.add_file(context.file_path(name), field)
+    context.request.add_file(context.helpers.file_path(name), field)
 
 
 @when('with data')

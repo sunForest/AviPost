@@ -4,5 +4,3 @@ from .ci_stubbed_prod import *
 
 # serve static files
 DEBUG = True
-
-INSTALLED_APPS += ('autofixture',)

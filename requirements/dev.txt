@@ -7,3 +7,5 @@ inflection==0.3.1
 json-schema-generator==0.3
 jsonschema==0.8.0
 django-autofixture==0.10.0
+requests==2.6.0
+django-extensions==1.5.5

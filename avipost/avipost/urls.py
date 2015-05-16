@@ -13,6 +13,4 @@ urlpatterns = patterns('',
 )
 
 if settings.DEBUG:
-    import autofixture
-    autofixture.autodiscover()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -21,7 +21,7 @@ def get_env_variable(var_name):
         error_msg = "The %s environment variable is not set" % var_name
         raise ImproperlyConfigured(error_msg)
 
-BASE_DIR = Path(__file__).ancestor(3)
+BASE_DIR = Path(os.path.realpath(__file__)).ancestor(3)
 
 
 # Quick-start development settings - unsuitable for production
@@ -86,6 +86,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR.child('media')
 
 FILE_UPLOAD_PERMISSIONS = 0644

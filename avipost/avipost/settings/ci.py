@@ -5,4 +5,7 @@ Complete settings for ci
 """
 from .ci_stubbed_prod import *
 
-INSTALLED_APPS += ('autofixture',)
+INSTALLED_APPS += (
+    'autofixture',
+    'django_extensions'
+)
