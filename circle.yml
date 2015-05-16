@@ -27,7 +27,8 @@ test:
     - docker run --name=api --net='host' -p 80:80 -e "DJANGO_SETTINGS_MODULE=avipost.settings.ci_stubbed_prod" -d avipost
   override:
     - coverage run --source='.' avipost/manage.py test
-    - behave -D base_url=http://127.0.0.1 e2e/features/ 
+    - behave -D base_url=http://127.0.0.1 e2e/features/
+    - curl http://127.0.0.1/media/placeholder.jpg -I
   post:
     - coverage html -d $CIRCLE_ARTIFACTS
     - coveralls
