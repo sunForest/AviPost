@@ -52,7 +52,7 @@ done
 
 function delete_target() {
     # for compability between OS X and Linux we use temp files
-    sed "/^$target==/d" > /tmp/$env.txt 
+    sed "/^$target==/d" requirements/$env.txt > /tmp/$env.txt 
     cp /tmp/$env.txt requirements/$env.txt
 }
 
@@ -61,7 +61,7 @@ if [[ $cmd == "install" ]]; then
     # delete first if exists
     delete_target
     # add
-    pip freeze | grep $target >> requirements/$env.txt
+    pip freeze | grep -E "^$target==" >> requirements/$env.txt
 elif [[ $cmd == "uninstall" ]]; then
     pip $cmd $target
     delete_target
