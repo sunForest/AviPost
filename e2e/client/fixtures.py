@@ -6,18 +6,21 @@
 from autofixture import AutoFixture, generators
 from django.core.management import call_command
 
-default_cover_sizes = (
-    (800, 600),
-    (600, 800),
-    (1200, 600),
-    (600, 1200),
-    (1000, 1000),
+cover_files = (
+    'covers/demo-horizontal.png',
+    'covers/demo-horizontal-2.jpg',
+    'covers/demo-horizontal-3.jpg',
+    'covers/demo-horizontal-4.jpg',
+    'covers/demo-square.jpg',
+    'covers/demo-vertical.jpg',
+    'covers/demo-vertical-2.jpg',
+    'covers/placeholder.jpg',
 )
 
 postcard_fixture = AutoFixture(
     Postcard,  # noqa
     field_values={
-        'cover': generators.ImageGenerator(sizes=default_cover_sizes),
+        'cover': generators.ChoicesGenerator(values=cover_files),
     }
 )
 
