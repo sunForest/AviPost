@@ -5,7 +5,6 @@ from django.conf import settings
 from postcards.models import Postcard
 
 
-
 class PostcardAPITests(TestCase):
 
     def setUp(self):

@@ -13,6 +13,7 @@ import os
 from unipath import Path
 from django.core.exceptions import ImproperlyConfigured
 
+
 def get_env_variable(var_name):
     """Get the environment variable or return exception."""
     try:
@@ -44,9 +45,17 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'postcards',
     'rest_framework',
+    'social.apps.django_app.default',
+    'oauth2_provider',
+    'postcards',
 )
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -62,13 +71,18 @@ ROOT_URLCONF = 'avipost.urls'
 
 WSGI_APPLICATION = 'avipost.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+    )
+}
 
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.7/topics/i18n/
+oauth2_provider = {
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope'}
+}
 
 LANGUAGE_CODE = 'en-us'
 
@@ -89,3 +103,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.child('media')
 
 FILE_UPLOAD_PERMISSIONS = 0644
+
+# Settings for facebook login
+SOCIAL_AUTH_FACEBOOK_KEY = '459238370908136'
+SOCIAL_AUTH_FACEBOOK_SECRET = '0417ae7da6d821be6c03c0ef0f80ac63'
+FACEBOOK_EXTENDED_PERMISSIONS = ['email']
