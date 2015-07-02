@@ -26,4 +26,4 @@ ALLOWED_HOSTS = ["52.16.214.13", "127.0.0.1", "localhost"]
 #     }
 # }
 
-SECRET_KEY = get_env_variable('SECRET_KEY')
+#SECRET_KEY = get_env_variable('SECRET_KEY')
