@@ -11,7 +11,9 @@ def before_all(context):
 
 def before_scenario(context, _):
     context.helpers.clean_db()
+    context.helpers.setup_oauth()
 
 
 def after_scenario(context, _):
-    context.helpers.clean_db()
+    #context.helpers.clean_db()
+    pass

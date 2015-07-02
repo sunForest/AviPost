@@ -10,3 +10,4 @@ lib/
 .bashrc
 .*.sw*
 _autofixture/
+avipost/media

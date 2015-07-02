@@ -6,9 +6,14 @@ from .serializers import PostcardSerializer
 
 
 class PostcardViewSet(viewsets.ModelViewSet):
-    queryset = Postcard.objects.all()
+
+    def get_queryset(self):
+        #user = self.request.user
+        return Postcard.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save()
+
     serializer_class = PostcardSerializer
     parser_classes = (FileUploadParser, JSONParser,)
     permission_classes = (permissions.IsAuthenticated,)
-
-# Create your views here.

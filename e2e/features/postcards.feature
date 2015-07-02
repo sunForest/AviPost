@@ -1,5 +1,8 @@
 Feature: /postcards
 
+    Background:
+        Given user is logged in
+
     Scenario: GET
         Given server has 5 postcards
         When GET "/postcards/"
@@ -25,3 +28,6 @@ Feature: /postcards
             } 
             """
         Then request will success for 201
+        When GET "/postcards/"
+        Then request will success for 200
+        And return 4 items

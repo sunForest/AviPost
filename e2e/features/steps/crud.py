@@ -16,20 +16,32 @@ from _lazy_request import LazyRequest
 import logging
 logging.getLogger("requests").setLevel(logging.WARNING)
 
+IS_LOGGED_IN_USER = False
+
 
 @given('server has {count:d} {item:S}')
 def step_impl(context, count, item):
     context.helpers.load_data(singularize(item), count)
 
 
+@given('user is logged in')
+def step_impl(context):
+    global IS_LOGGED_IN_USER
+    IS_LOGGED_IN_USER = True
+
+
 @when('GET "{rel_url:S}"')
 def step_impl(context, rel_url):
     context.request = LazyRequest('GET', context.helpers.url(rel_url))
+    if IS_LOGGED_IN_USER:
+        context.request.get_token()
 
 
 @when('POST "{rel_url:S}"')
 def step_impl(context, rel_url):
     context.request = LazyRequest('POST', context.helpers.url(rel_url))
+    if IS_LOGGED_IN_USER:
+        context.request.get_token()
 
 
 @when('with file "{name:S}" as {field:S}')
@@ -41,17 +53,18 @@ def step_impl(context, name, field):
 def step_impl(context):
     context.request.add_data(json.loads(context.text))
 
+
 @then('request will {state:S} for {code:d}')
 def step_impl(context, state, code):
     context.response = context.request.send()
     context.response.status_code.should.equal(code)
-    if str(code).startswith('2'):
-        state.should.equal('success')
 
 
 @then('return {count:d} items')
 def step_impl(context, count):
-    assert len(context.response.json()).should.equal(count)
+    print (context.response.json())
+    cnt = len(context.response.json())
+    cnt.should.equal(count)
 
 
 @then('is like')

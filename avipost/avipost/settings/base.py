@@ -36,6 +36,7 @@ TEMPLATE_DEBUG = False
 ALLOWED_HOSTS = ['localhost']
 
 
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -49,10 +50,12 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'oauth2_provider',
     'postcards',
+    #'users',
 )
 
 AUTHENTICATION_BACKENDS = (
     'social.backends.facebook.FacebookOAuth2',
+    # default django authentication backend
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -94,6 +97,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+#AUTH_USER_MODEL = 'users.OAuthUser'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/

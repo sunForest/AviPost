@@ -14,7 +14,9 @@ class Migration(migrations.Migration):
             name='Postcard',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('content', models.TextField(verbose_name=b'Content')),
+                ('message', models.CharField(default=b'Hello!', max_length=140, verbose_name=b'Message')),
+                ('cover', models.ImageField(default=b'placeholder.jpg', upload_to=b'', verbose_name=b'Cover')),
+                ('sender', models.CharField(default=b'demo', max_length=20, verbose_name=b'Sender')),
             ],
             options={
             },

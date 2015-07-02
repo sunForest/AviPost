@@ -7,7 +7,7 @@ from rest_framework import routers
 from postcards.views import PostcardViewSet
 
 router = routers.DefaultRouter()
-router.register(r'postcards', PostcardViewSet)
+router.register(r'postcards', PostcardViewSet, 'Postcard')
 
 urlpatterns = patterns(
     '',

@@ -19,6 +19,15 @@ def exec_manage(subcommand, *args):
     subprocess.call(cmd, stdout=devnull)
 
 
+def setup_oauth():
+    """ create user and application """
+    base_path = os.path.dirname(os.path.realpath(__file__))
+    path_to_user_fixture = os.path.join(base_path, 'user.json')
+    path_to_app_fixture = os.path.join(base_path, 'app.json')
+    exec_manage('loaddata', path_to_user_fixture)
+    exec_manage('loaddata', path_to_app_fixture)
+
+
 def clean_db():
     """ clean database """
     exec_manage('flush', '--noinput')
@@ -50,7 +59,7 @@ def helpers(context):
         return urljoin(context.config.userdata.get('base_url'), rel_url)
 
     return namedtuple(
-        'Helpers', ['url', 'file_path', 'load_data', 'clean_db']
+        'Helpers', ['url', 'file_path', 'load_data', 'clean_db', 'setup_oauth']
     )(
-        url, file_path, load_data, clean_db
+        url, file_path, load_data, clean_db, setup_oauth
     )
