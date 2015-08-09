@@ -4,9 +4,6 @@ FROM python:2.7
 RUN apt-get update && \
 apt-get install -y \
 	libpq-dev \
-    python-dev \ 
-    libpython-dev \
-    libevent-dev \
     libgeos-dev \
 	nginx \
     supervisor
