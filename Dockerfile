@@ -2,11 +2,12 @@ FROM python:2.7
 
 # os dependencies
 RUN apt-get update && \
-apt-get install -y \
-	libpq-dev \
-    libgeos-dev \
-	nginx \
-    supervisor
+    apt-get install -y \
+        libpq-dev \
+        libgeos-dev \
+        nginx \
+        supervisor
+RUN wget https://bootstrap.pypa.io/ez_setup.py -O - | python
 COPY deployment/avipost.conf /etc/nginx/sites-enabled/
 COPY deployment/supervisord.conf /etc/supervisord.conf
 RUN mkdir -p /usr/src/app
