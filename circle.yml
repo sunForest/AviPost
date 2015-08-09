@@ -10,6 +10,7 @@ machine:
 
 dependencies:
   pre:
+    - pip install --upgrade setuptools
     - pip install -r requirements/ci.txt
 
 database:
