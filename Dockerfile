@@ -4,6 +4,9 @@ FROM python:2.7
 RUN apt-get update && \
 apt-get install -y \
 	libpq-dev \
+    python-dev \ 
+    libpython-dev \
+    libevent-dev \
     libgeos-dev \
 	nginx \
     supervisor
@@ -19,3 +22,4 @@ RUN pip install -r requirements/prod.txt
 RUN service nginx stop
 
 CMD supervisord -c /etc/supervisord.conf -n
+
