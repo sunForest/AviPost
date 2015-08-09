@@ -14,6 +14,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 ADD . /usr/src/app/
+RUN pip install --upgrade setuptools
 RUN pip install -r requirements/prod.txt
 
 # restart nginx to load the config
