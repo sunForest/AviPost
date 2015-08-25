@@ -62,6 +62,12 @@ if [[ $cmd == "install" ]]; then
     delete_target
     # add
     pip freeze | grep -E "^$target==" >> requirements/$env.txt
+elif [[ $cmd == "upgrade" ]]; then
+    pip install -U $target
+    # delete first if exists
+    delete_target
+    # add
+    pip freeze | grep -E "^$target==" >> requirements/$env.txt
 elif [[ $cmd == "uninstall" ]]; then
     pip $cmd $target
     delete_target
