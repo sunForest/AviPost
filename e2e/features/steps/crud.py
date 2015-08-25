@@ -40,6 +40,7 @@ def step_impl(context, name, field):
 def step_impl(context):
     context.request.add_data(json.loads(context.text))
 
+
 @then('request will {state:S} for {code:d}')
 def step_impl(context, state, code):
     context.response = context.request.send()

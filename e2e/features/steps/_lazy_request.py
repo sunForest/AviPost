@@ -18,16 +18,15 @@ class LazyRequest(object):
         send real network request
         """
         if self.upload:
-            with open(self.file_name) as fp:
+            with open(self.file_name, 'rb') as fp:
                 response = request(
                     self.verb, self.url, data=self.data,
-                    files={ self.file_field: fp }
+                    files={self.file_field: fp}
                 )
         else:
             response = request(self.verb, self.url, data=self.data)
         print(response.status_code)
         return response
-    
 
     def add_file(self, file_name, file_field):
         """ add file to be uploaded
