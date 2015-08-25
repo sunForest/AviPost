@@ -5,13 +5,39 @@ Feature: /postcards
         When GET "/postcards/"
         Then request will success for 200
         And return 5 items
-        And is like
+        And has structure
             """
-            [{
-                "message": "Hello",
-                "cover": "http://world.com/0.png",
-                "sender": "someone"
-            }]
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "id": "/",
+                "type": "array",
+                "items": {
+                    "id": "0",
+                    "type": "object",
+                    "properties": {
+                        "message": {
+                            "id": "message",
+                            "type": "string"
+                        },
+                        "cover": {
+                            "id": "cover",
+                            "type": "string"
+                        },
+                        "sender": {
+                            "id": "sender",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "message",
+                        "cover",
+                        "sender"
+                    ]
+                },
+                "required": [
+                    "0"
+                ]
+            }
             """
 
     Scenario: POST

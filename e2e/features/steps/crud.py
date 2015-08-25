@@ -4,7 +4,6 @@ from behave import given, when, then
 # implicitly used
 import sure
 from inflection import singularize
-from json_schema_generator import SchemaGenerator
 # We use this instead of validator from json_schema_generator
 # because its error reports are far better
 from jsonschema import validate
@@ -54,7 +53,6 @@ def step_impl(context, count):
     assert len(context.response.json()).should.equal(count)
 
 
-@then('is like')
+@then('has structure')
 def step_impl(context):
-    schema = SchemaGenerator.from_json(context.text)
-    validate(context.response.json(), schema.to_dict())
+    validate(context.response.json(), json.loads(context.text))
