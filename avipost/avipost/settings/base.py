@@ -35,8 +35,6 @@ TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = ['localhost']
 
-
-
 # Application definition
 
 INSTALLED_APPS = (
@@ -50,7 +48,7 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'oauth2_provider',
     'postcards',
-    #'users',
+    'users',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -106,9 +104,10 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.child('media')
 
-FILE_UPLOAD_PERMISSIONS = 0644
 
 # Settings for facebook login
 SOCIAL_AUTH_FACEBOOK_KEY = '459238370908136'
 SOCIAL_AUTH_FACEBOOK_SECRET = '0417ae7da6d821be6c03c0ef0f80ac63'
 FACEBOOK_EXTENDED_PERMISSIONS = ['email']
+
+FILE_UPLOAD_PERMISSIONS = 0o644

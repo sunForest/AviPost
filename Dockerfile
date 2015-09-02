@@ -1,12 +1,12 @@
-FROM python:2.7
+FROM python:3.4
 
 # os dependencies
 RUN apt-get update && \
-apt-get install -y \
-	libpq-dev \
-    libgeos-dev \
-	nginx \
-    supervisor
+    apt-get install -y \
+        libpq-dev \
+        libgeos-dev \
+        nginx \
+        supervisor
 COPY deployment/avipost.conf /etc/nginx/sites-enabled/
 COPY deployment/supervisord.conf /etc/supervisord.conf
 RUN mkdir -p /usr/src/app

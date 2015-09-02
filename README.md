@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/sunForest/AviPost.png?label=ready&title=Ready)](https://waffle.io/sunForest/AviPost)
 # AviPost
 
 [![Circle CI](https://img.shields.io/circleci/project/sunForest/AviPost.svg)](https://circleci.com/gh/sunForest/AviPost) [![Coverage Status](https://img.shields.io/coveralls/sunForest/AviPost/master.svg)](https://coveralls.io/r/sunForest/AviPost?branch=master)

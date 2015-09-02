@@ -3,7 +3,7 @@ or interacting with outside environment """
 import subprocess
 from collections import namedtuple
 import os
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 
 def exec_manage(subcommand, *args):

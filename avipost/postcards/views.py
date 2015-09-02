@@ -8,11 +8,12 @@ from .serializers import PostcardSerializer
 class PostcardViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
-        #user = self.request.user
-        return Postcard.objects.all()
+        user = self.request.user
+        return Postcard.objects.filter(sender=user)
 
     def perform_create(self, serializer):
-        serializer.save()
+        print ("post")
+        serializer.save(sender=self.request.user)
 
     serializer_class = PostcardSerializer
     parser_classes = (FileUploadParser, JSONParser,)

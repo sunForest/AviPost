@@ -1,7 +1,7 @@
 from requests import request
 
 
-TEST_TOKEN = 'CAAGhrMP3FZBgBAGemH67ru5s9lk1ajnVshgujfl2JBgAzBozFFFiUwMULCZAzQ3S2y2oMd1kvmvAs9Rb8zEzwdsxmKKyDVa0DPlHnv3FD0363BOL2llilQVDZBhLZBJqgoNI5PsqjDPVC4oeL7uMPoZAvNLlQYZBOQwpKSxZCKLoizJYZC2BRD0xu1oLCd3z2YUjcKbgWyYWGKBQ11DJHm0ZCYOvSyiJ6eVUZD'
+TEST_TOKEN = 'CAAGhrMP3FZBgBAFD4LzYAfVZAdYEN7qrn7lsrEIrhdWxVlEc9eoOzRVGwYZBnp4edkZBpQam84p9WzxbcCmxOOW5gbLWN506wQ25KZBBpUInQpNXSuLwNHcNLnLB4yPAa4QZBFQHvokZAQPO4UWHnhC4BHBx54Fjt98kCyuDqDVZBg8NaZB5IZCzl3y4c1zzqzl7fwvN0bFmNXYHuUDmeuvR0v'
 
 
 class LazyRequest(object):
@@ -21,6 +21,7 @@ class LazyRequest(object):
     def get_token(self, access_token=TEST_TOKEN):
         params = {'access_token': access_token}
         res = request('GET', self.get_token_url, params=params)
+        print (res)
         resAsJson = res.json()
         self.token = resAsJson['access_token']
 
@@ -33,7 +34,7 @@ class LazyRequest(object):
             headers['Authorization'] = 'Bearer ' + self.token
 
         if self.upload:
-            with open(self.file_name) as fp:
+            with open(self.file_name, 'rb') as fp:
                 response = request(
                     self.verb, self.url, data=self.data,
                     files={ self.file_field: fp }, headers=headers
@@ -41,7 +42,6 @@ class LazyRequest(object):
         else:
             response = request(self.verb, self.url, data=self.data, headers=headers)
         return response
-    
 
     def add_file(self, file_name, file_field):
         """ add file to be uploaded
