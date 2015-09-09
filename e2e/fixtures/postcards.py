@@ -1,10 +1,13 @@
 """ Create a complete test data fixture for e2e tests of various clients """
 
+import os
+
 # The script will be run under django context, so linter may report
 # false positive warnings. Here we use noqa somewhere to tell pyflake8
 # not complain some missing references.
 from autofixture import AutoFixture, generators
-from django.core.management import call_command
+
+count = int(os.environ.get('COUNT', 30))
 
 cover_files = (
     'covers/demo-horizontal.png',
@@ -17,13 +20,16 @@ cover_files = (
     'covers/placeholder.jpg',
 )
 
+user = User.objects.get(username=settings.TEST_CONFIG['USER_NAME'])  # noqa
+
 postcard_fixture = AutoFixture(
     Postcard,  # noqa
     field_values={
         'cover': generators.ChoicesGenerator(values=cover_files),
+        'sender': user
     }
 )
 
-call_command('flush', interactive=False)
+Postcard.objects.all().delete() # noqa
 
-postcard_fixture.create(30)
+postcard_fixture.create(count)

@@ -3,7 +3,6 @@ import json
 from behave import given, when, then
 # implicitly used
 import sure
-from inflection import singularize
 # We use this instead of validator from json_schema_generator
 # because its error reports are far better
 from jsonschema import validate
@@ -15,32 +14,29 @@ from _lazy_request import LazyRequest
 import logging
 logging.getLogger("requests").setLevel(logging.WARNING)
 
-IS_LOGGED_IN_USER = False
 
-
-@given('server has {count:d} {item:S}')
-def step_impl(context, count, item):
-    context.helpers.load_data(singularize(item), count)
-
-
-@given('user is logged in')
+@given('I am logged in')
 def step_impl(context):
-    global IS_LOGGED_IN_USER
-    IS_LOGGED_IN_USER = True
+    token = 'fake_token'
+    context.helpers.create_test_user(token)
+    context.token = token
+
+
+@given('I received {count:d} postcards')
+def step_impl(context, count):
+    context.helpers.load_postcards(count)
 
 
 @when('GET "{rel_url:S}"')
 def step_impl(context, rel_url):
-    context.request = LazyRequest('GET', context.helpers.url(rel_url))
-    if IS_LOGGED_IN_USER:
-        context.request.get_token()
+    context.request = LazyRequest(
+        'GET', context.helpers.url(rel_url), context.token)
 
 
 @when('POST "{rel_url:S}"')
 def step_impl(context, rel_url):
-    context.request = LazyRequest('POST', context.helpers.url(rel_url))
-    if IS_LOGGED_IN_USER:
-        context.request.get_token()
+    context.request = LazyRequest(
+        'POST', context.helpers.url(rel_url), context.token)
 
 
 @when('with file "{name:S}" as {field:S}')

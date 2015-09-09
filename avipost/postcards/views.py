@@ -12,7 +12,6 @@ class PostcardViewSet(viewsets.ModelViewSet):
         return Postcard.objects.filter(sender=user)
 
     def perform_create(self, serializer):
-        print ("post")
         serializer.save(sender=self.request.user)
 
     serializer_class = PostcardSerializer

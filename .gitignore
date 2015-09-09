@@ -11,3 +11,4 @@ lib/
 .*.sw*
 _autofixture/
 avipost/media
+*.sublime-project

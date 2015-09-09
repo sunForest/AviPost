@@ -1,12 +1,8 @@
-from .base import *
+from .ci import *
 
-SECRET_KEY = 'lt$#a29ayf(z(xa*f$$%2ydteo!&ra)$ceiul&y1$9ha*xp0a6'
+# SECRET_KEY = 'lt$#a29ayf(z(xa*f$$%2ydteo!&ra)$ceiul&y1$9ha*xp0a6'
 
 DEBUG = True
-
-INSTALLED_APPS += (
-    'autofixture',
-)
 
 DATABASES = {
     'default': {

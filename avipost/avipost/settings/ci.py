@@ -1,4 +1,4 @@
-""" 
+"""
 Complete settings for ci
 = ci_stubbed_prod settings  + extra ci environments
 
@@ -9,3 +9,8 @@ INSTALLED_APPS += (
     'autofixture',
     'django_extensions'
 )
+
+TEST_CONFIG = {
+    'TOKEN': 'fake_token',
+    'USER_NAME': 'Zebrafinch'
+}

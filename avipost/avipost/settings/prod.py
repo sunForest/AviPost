@@ -5,15 +5,15 @@ INSTALLED_APPS += (
 )
 
 # need to be before django.middleware.common.CommonMiddleware
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES += (
     'corsheaders.middleware.CorsMiddleware',
-) + MIDDLEWARE_CLASSES
+)
 
 CORS_ORIGIN_ALLOW_ALL = True
 
 # TODO: set the database parameters
 
-ALLOWED_HOSTS = ["52.16.214.13", "127.0.0.1", "localhost"]
+# ALLOWED_HOSTS = ["52.16.214.13", "127.0.0.1", "localhost"]
 
 # DATABASES = {
 #     'default': {
@@ -26,4 +26,4 @@ ALLOWED_HOSTS = ["52.16.214.13", "127.0.0.1", "localhost"]
 #     }
 # }
 
-#SECRET_KEY = get_env_variable('SECRET_KEY')
+# SECRET_KEY = get_env_variable('SECRET_KEY')

@@ -1,13 +1,13 @@
 Feature: /postcards
 
     Background:
-        Given user is logged in
+        Given I am logged in
 
     Scenario: GET
-        Given server has 5 postcards
+        Given I received 5 postcards 
         When GET "/postcards/"
         Then request will success for 200
-        And return 0 items
+        And return 5 items
         And has structure
             """
             {
@@ -44,7 +44,7 @@ Feature: /postcards
             """
 
     Scenario: POST
-        Given server has 3 postcards
+        Given I received 3 postcards 
         When POST "/postcards/"
         And with file "test_image.jpg" as cover
         And with data 
@@ -56,4 +56,4 @@ Feature: /postcards
         Then request will success for 201
         When GET "/postcards/"
         Then request will success for 200
-        And return 1 items
+        And return 4 items
