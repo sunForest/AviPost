@@ -3,12 +3,10 @@
 from autofixture import AutoFixture, generators
 from postcards.models import Postcard
 from django.contrib.auth.models import User
-from django.conf import settings
 
 
-def create(username, count=30):
+def create(user_name, count=30):
     count = int(count)
-    # count = int(os.environ.get('COUNT', 30))
 
     cover_files = (
         'covers/demo-horizontal.png',
@@ -21,8 +19,8 @@ def create(username, count=30):
         'covers/placeholder.jpg',
     )
 
-    # user = User.objects.get(username=username)
-    user = User.objects.get(username=settings.TEST_CONFIG['USER_NAME'])
+    print(user_name)
+    user = User.objects.get(username=user_name)
 
     postcard_fixture = AutoFixture(
         Postcard,

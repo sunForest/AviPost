@@ -5,14 +5,11 @@ from django.contrib.auth.models import User
 from oauth2_provider.models import AccessToken
 
 
-def create():
-    test_user_name = settings.TEST_CONFIG['USER_NAME']
-    test_token = settings.TEST_CONFIG['TOKEN']
-
+def create(user_name, token):
     user_fixture = AutoFixture(
         User,  # noqa
         field_values={
-            'username': test_user_name,
+            'username': user_name,
             'is_staff': False,
         }
     )
@@ -27,7 +24,7 @@ def create():
             'user': user,
             'scope': 'read write',
             'expires': now() + timedelta(seconds=10000000),
-            'token': test_token
+            'token': token
         })
 
     # currently only support generating one user per time

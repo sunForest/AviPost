@@ -24,8 +24,9 @@ def setup_oauth():
     exec_manage('fixture', '_oauth')
 
 
-def create_test_user(token):
-    exec_manage('fixture', '_users')
+def create_test_user(user_name, token):
+    exec_manage('fixture', '_users', '--par',
+                '{0},{1}'.format(user_name, token))
 
 
 def clean_db():
@@ -33,14 +34,14 @@ def clean_db():
     exec_manage('flush', '--noinput')
 
 
-def load_postcards(count):
-    """ load <count> postcards
+def load_postcards(user_name, count):
+    """ load <count> postcards for <user_name>
 
     :count: integer, e.g. 3
 
     """
     exec_manage('fixture', '_postcards', '--par',
-                '{0},{1}'.format('a', count))
+                '{0},{1}'.format(user_name, count))
 
 
 def file_path(file_name):

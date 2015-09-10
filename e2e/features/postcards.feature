@@ -1,7 +1,8 @@
 Feature: /postcards
 
     Background:
-        Given I am logged in
+        Given I am a user
+        And I have logged in
 
     Scenario: GET
         Given I received 5 postcards 
