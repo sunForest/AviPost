@@ -7,7 +7,8 @@ from .ci_stubbed_prod import *
 
 INSTALLED_APPS += (
     'autofixture',
-    'django_extensions'
+    # 'django_extensions',
+    'contrib'
 )
 
 TEST_CONFIG = {

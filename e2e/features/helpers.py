@@ -5,8 +5,6 @@ from collections import namedtuple
 import os
 from urllib.parse import urljoin
 
-from env import setenv
-
 
 def _abs_path(rel_path):
     return os.path.join(
@@ -15,7 +13,7 @@ def _abs_path(rel_path):
     )
 
 
-def exec_manage(subcommand, stdin, *args):
+def exec_manage(subcommand, *args):
     """ execute command using manage.py """
     manager = os.path.join(
         os.path.dirname(os.path.realpath(__file__)),
@@ -25,24 +23,24 @@ def exec_manage(subcommand, stdin, *args):
     cmd = (['python', manager, subcommand] + list(args))
 
     devnull = open(os.devnull, 'w')
-    subprocess.call(cmd, stdout=devnull, stdin=open(stdin, 'r'))
+    subprocess.call(cmd, stdout=devnull)
 
 
 def setup_oauth():
     """ create user and application """
     path_to_superuser_fixture = _abs_path('user.json')
     path_to_app_fixture = _abs_path('app.json')
-    exec_manage('loaddata', os.devnull, path_to_superuser_fixture)
-    exec_manage('loaddata', os.devnull, path_to_app_fixture)
+    exec_manage('loaddata', path_to_superuser_fixture)
+    exec_manage('loaddata', path_to_app_fixture)
 
 
 def create_test_user(token):
-    exec_manage('shell_plus', _abs_path('../fixtures/users.py'))
+    exec_manage('fixture', '_users')
 
 
 def clean_db():
     """ clean database """
-    exec_manage('flush', os.devnull, '--noinput')
+    exec_manage('flush', '--noinput')
 
 
 def load_postcards(count):
@@ -51,8 +49,8 @@ def load_postcards(count):
     :count: integer, e.g. 3
 
     """
-    with setenv('COUNT', count):
-        exec_manage('shell_plus', _abs_path('../fixtures/postcards.py'))
+    exec_manage('fixture', '_postcards', '--par',
+                '{0},{1}'.format('a', count))
 
 
 def file_path(file_name):
