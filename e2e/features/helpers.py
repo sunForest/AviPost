@@ -6,13 +6,6 @@ import os
 from urllib.parse import urljoin
 
 
-def _abs_path(rel_path):
-    return os.path.join(
-        os.path.dirname(os.path.realpath(__file__)),
-        rel_path
-    )
-
-
 def exec_manage(subcommand, *args):
     """ execute command using manage.py """
     manager = os.path.join(
@@ -28,10 +21,7 @@ def exec_manage(subcommand, *args):
 
 def setup_oauth():
     """ create user and application """
-    path_to_superuser_fixture = _abs_path('user.json')
-    path_to_app_fixture = _abs_path('app.json')
-    exec_manage('loaddata', path_to_superuser_fixture)
-    exec_manage('loaddata', path_to_app_fixture)
+    exec_manage('fixture', '_oauth')
 
 
 def create_test_user(token):
