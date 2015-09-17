@@ -1,10 +1,11 @@
 Feature: /postcards
 
     Background:
-        Given I am logged in
+        Given Tom and Jerry are registered users
+        And Tom is logged in
 
     Scenario: GET
-        Given I received 5 postcards 
+        Given Tom received 5 postcards 
         When GET "/postcards/"
         Then request will success for 200
         And return 5 items
@@ -44,16 +45,18 @@ Feature: /postcards
             """
 
     Scenario: POST
-        Given I received 3 postcards 
+        Given Jerry received 3 postcards 
         When POST "/postcards/"
         And with file "test_image.jpg" as cover
         And with data 
             """
             {
-                "message": "Hello with image"
+                "message": "Hello with image",
+                "receiver": <Jerry's Id>
             } 
             """
         Then request will success for 201
-        When GET "/postcards/"
+        When Jerry is logged in
+        And GET "/postcards/"
         Then request will success for 200
         And return 4 items
