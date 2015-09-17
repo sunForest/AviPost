@@ -15,5 +15,5 @@ def before_scenario(context, _):
 
 
 def after_scenario(context, _):
-    # context.helpers.clean_db()
-    pass
+    context.helpers.clean_db()
+    # pass

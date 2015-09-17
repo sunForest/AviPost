@@ -26,7 +26,7 @@ def create(user_name, count=30):
         Postcard,
         field_values={
             'cover': generators.ChoicesGenerator(values=cover_files),
-            'sender': user
+            'receiver': user
         }
     )
 

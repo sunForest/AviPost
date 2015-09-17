@@ -15,8 +15,7 @@ def exec_manage(subcommand, *args):
 
     cmd = (['python', manager, subcommand] + list(args))
 
-    devnull = open(os.devnull, 'w')
-    subprocess.call(cmd, stdout=devnull)
+    return subprocess.check_output(cmd).decode().rstrip('\n')
 
 
 def setup_oauth():
@@ -25,8 +24,8 @@ def setup_oauth():
 
 
 def create_test_user(user_name, token):
-    exec_manage('fixture', '_users', '--par',
-                '{0},{1}'.format(user_name, token))
+    return exec_manage('fixture', '_users', '--par',
+                       '{0},{1}'.format(user_name, token))
 
 
 def clean_db():

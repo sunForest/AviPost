@@ -7,4 +7,5 @@ class Postcard(models.Model):
     # textField?
     message = models.CharField('Message', max_length=140, default="Hello!")
     cover = models.ImageField('Cover', default="placeholder.jpg")
-    sender = models.ForeignKey(User)
+    sender = models.ForeignKey(User, related_name="sent_by", default=1)
+    receiver = models.ForeignKey(User, related_name="received_by", default=1)

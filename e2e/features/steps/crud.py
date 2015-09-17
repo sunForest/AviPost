@@ -1,4 +1,5 @@
 import json
+import re
 
 from behave import given, when, then
 from behave import use_step_matcher
@@ -18,18 +19,22 @@ logging.getLogger("requests").setLevel(logging.WARNING)
 
 
 # (?:xx) changes priority but will not be captured as args
-@given('(\w+) (?:am|are|is) a user')
-def step_impl(context, user_name):
-    token = 'fake_token_' + user_name
-    context.helpers.create_test_user(user_name, token)
+@given('(.+) are users')
+def step_impl(context, user_names_str):
     if not hasattr(context, 'users'):
         context.users = {}
-    context.users[user_name] = token
+
+    user_names = [name.strip() for name in re.split('and|,', user_names_str)]
+    for user_name in user_names:
+        print (user_name)
+        token = 'fake_token_' + user_name
+        user_id = context.helpers.create_test_user(user_name, token)
+        context.users[user_name] = {'token': token, 'id': user_id}
 
 
-@given('(\w+) (?:has|have) logged in')
+@given('(\w+) (?:is|am|are) logged in')
 def step_impl(context, user_name):
-    context.token = context.users[user_name]
+    context.token = context.users[user_name]['token']
 
 
 @given('(\w+) received (\d+) postcards')
@@ -56,7 +61,12 @@ def step_impl(context, name, field):
 
 @when('with data')
 def step_impl(context):
-    context.request.add_data(json.loads(context.text))
+    data = json.loads(context.text)
+    receiver_name = re.match(r"\<(\w+)'s id\>", data['receiver']).group(1)
+    data['receiver'] = context.users[receiver_name]['id']
+    print(receiver_name)
+    print(context.users)
+    context.request.add_data(data)
 
 
 @then('request will (\w+) for (\d+)')
