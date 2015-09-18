@@ -15,7 +15,6 @@ def create(user_name, token):
     )
 
     user = user_fixture.create(1)[0]
-    print(user.id)
 
     token_fixture = AutoFixture(
         AccessToken,
@@ -28,3 +27,6 @@ def create(user_name, token):
 
     # currently only support generating one user per time
     token_fixture.create(1)
+
+    # output
+    print(user.id)

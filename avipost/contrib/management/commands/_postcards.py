@@ -19,7 +19,6 @@ def create(user_name, count=30):
         'covers/placeholder.jpg',
     )
 
-    print(user_name)
     user = User.objects.get(username=user_name)
 
     postcard_fixture = AutoFixture(

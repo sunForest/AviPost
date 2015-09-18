@@ -26,7 +26,6 @@ def step_impl(context, user_names_str):
 
     user_names = [name.strip() for name in re.split('and|,', user_names_str)]
     for user_name in user_names:
-        print (user_name)
         token = 'fake_token_' + user_name
         user_id = context.helpers.create_test_user(user_name, token)
         context.users[user_name] = {'token': token, 'id': user_id}
@@ -64,8 +63,6 @@ def step_impl(context):
     data = json.loads(context.text)
     receiver_name = re.match(r"\<(\w+)'s id\>", data['receiver']).group(1)
     data['receiver'] = context.users[receiver_name]['id']
-    print(receiver_name)
-    print(context.users)
     context.request.add_data(data)
 
 
