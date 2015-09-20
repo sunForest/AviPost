@@ -6,7 +6,7 @@ machine:
     - docker
   environment:
     COVERALLS_REPO_TOKEN: rE9UQYri7oXINFzS6eJ3a0ssUJqLL8bg0
-    DJANGO_SETTINGS_MODULE: avipost.settings.ci
+    DJANGO_SETTINGS_MODULE: avipost.settings.ci_admin
 
 dependencies:
   pre:
@@ -25,7 +25,7 @@ test:
     - python avipost/manage.py migrate
     # e2e test
     - docker build -t avipost .
-    - docker run --name=api --net=host -e "DJANGO_SETTINGS_MODULE=avipost.settings.ci_stubbed_prod" -d avipost
+    - docker run --name=api --net=host -e "DJANGO_SETTINGS_MODULE=avipost.settings.ci" -d avipost
   override:
     - coverage run --source='.' avipost/manage.py test
     - behave -D base_url=http://127.0.0.1 e2e/features/
