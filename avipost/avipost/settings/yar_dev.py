@@ -1,5 +1,7 @@
+from .base import *
 from ._dev import *
 from ._admin import *
+
 
 SECRET_KEY = 'w%@7ljsrq9zrajqjh*s(k+tf%qgpasol*vmx8nu&83dz4ft5vz'
 
