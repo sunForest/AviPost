@@ -5,15 +5,17 @@ from django.conf.urls.static import static
 
 from rest_framework import routers
 from postcards.views import PostcardViewSet
+from users.views import UserViewSet
 
 router = routers.DefaultRouter()
 router.register(r'postcards', PostcardViewSet, 'Postcard')
+router.register(r'users', UserViewSet, 'User')
 
 urlpatterns = patterns(
     '',
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^', include(router.urls)),
-    url(r'^users/', include('users.urls')),
+    url(r'^authentication/', include('authentication.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 )

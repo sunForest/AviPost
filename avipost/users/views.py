@@ -1,13 +1,13 @@
-from django.http import HttpResponse
-from social.apps.django_app.utils import psa
-from .tools import get_access_token
+from django.contrib.auth.models import User
+from rest_framework import viewsets
+from rest_framework import permissions
+from .serializers import UserSerializer
 
-@psa('social:complete')
-def register_by_access_token(request, backend):
 
-    token = request.GET.get('access_token')
-    user = request.backend.do_auth(token)
-    if user:
-        return get_access_token(user)
-    else:
-        return HttpResponse("error")
+class UserViewSet(viewsets.ModelViewSet):
+
+    def get_queryset(self):
+        return User.objects.filter(is_staff=False)
+
+    serializer_class = UserSerializer
+    permission_classes = (permissions.IsAuthenticated,)

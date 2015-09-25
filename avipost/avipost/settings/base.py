@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'corsheaders',
     'social.apps.django_app.default',
     'oauth2_provider',
+    'authentication',
     'postcards',
     'users',
 )
