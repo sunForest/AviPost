@@ -1,5 +1,6 @@
 """ Create a complete test data fixture for e2e tests of various clients """
 
+from random import uniform
 from autofixture import AutoFixture, generators
 from postcards.models import Postcard
 from django.contrib.auth.models import User
@@ -25,7 +26,9 @@ def create(user_name, count=30):
         Postcard,
         field_values={
             'cover': generators.ChoicesGenerator(values=cover_files),
-            'receiver': user
+            'receiver': user,
+            'longitude': generators.CallableGenerator(uniform, [-180, 180]),
+            'latitude': generators.CallableGenerator(uniform, [-80, 80])
         }
     )
 

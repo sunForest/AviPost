@@ -11,4 +11,5 @@ lib/
 .*.sw*
 _autofixture/
 avipost/media
+migrations/
 *.sublime-project

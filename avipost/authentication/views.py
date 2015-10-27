@@ -6,8 +6,6 @@ from .tools import get_access_token
 @psa('social:complete')
 def register_by_access_token(request, backend):
 
-    print('view')
-    print(backend)
     token = request.GET.get('access_token')
     user = request.backend.do_auth(token)
     if user:

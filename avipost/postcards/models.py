@@ -9,3 +9,5 @@ class Postcard(models.Model):
     cover = models.ImageField('Cover', default="placeholder.jpg")
     sender = models.ForeignKey(User, related_name="sent_by", default=1)
     receiver = models.ForeignKey(User, related_name="received_by", default=1)
+    longitude = models.FloatField()
+    latitude = models.FloatField()
