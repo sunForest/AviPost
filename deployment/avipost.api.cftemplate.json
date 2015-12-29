@@ -1,0 +1,242 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+  "Description" : "Avipost is a service for sending postcard, built with Django, PostgreSQL.",
+  "Parameters" : {
+    "KeyName" : {
+      "Description" : "Name of and existing EC2 KeyPair to enable SSH access to the instance",
+      "Type" : "String",
+      "Default": "tuts"
+    },
+    "DBUser": {
+      "Type": "String",
+      "Default": "avipostDBAdmin"
+    },
+    "DBPassword": {
+      "Type": "String",
+      "NoEcho": "TRUE"
+    },
+    "DBName": {
+      "Type": "String",
+      "Default": "avipost-db"
+    },
+    "SecretKey": {
+      "Type": "String",
+      "NoEcho": "TRUE"
+    },
+    "ClusterSize": {
+      "Type": "Number",
+      "Default": "1",
+      "MinValue": "0",
+      "MaxValue": "10"
+    },
+    "ClusterInstanceType": {
+      "Description": "ECS Cluster Instance Type",
+      "Type": "String",
+      "Default": "t2.micro",
+      "AllowedValues": ["t2.micro", "t2.small", "t2.medium", "m3.medium", "m3.large", "m3.xlarge", "m3.2xlarge", "c3.large", "c3.xlarge", "c3.2xlarge", "c3.4xlarge", "c3.8xlarge", "c4.large", "c4.xlarge", "c4.2xlarge", "c4.4xlarge", "c4.8xlarge", "g2.2xlarge", "r3.large", "r3.xlarge", "r3.2xlarge", "r3.4xlarge", "r3.8xlarge", "i2.xlarge", "i2.2xlarge", "i2.4xlarge", "i2.8xlarge", "d2.xlarge", "d2.2xlarge", "d2.4xlarge", "d2.8xlarge", "hi1.4xlarge", "hs1.8xlarge", "cr1.8xlarge", "cc2.8xlarge"],
+      "ConstraintDescription": "must be a valid HVM instance type."
+    }
+  },
+  "Mappings": {
+    "RegionToECSOptimizedAMI": {
+      "us-east-1":      {"AMI": "ami-8da458e6"},
+      "us-west-2":      {"AMI": "ami-db0306eb"},
+      "eu-west-1":      {"AMI": "ami-7948320e"},
+      "ap-northeast-1": {"AMI": "ami-fa12b7fa"},
+      "ap-southeast-2": {"AMI": "ami-014f353b"}
+    }
+  },
+  "Resources" : {
+    "ApiServiceELB": {
+      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+      "Properties": {
+        "AvailabilityZones": {"Fn::GetAZs" : ""},
+        "Listeners": [{
+          "LoadBalancerPort": "80",
+          "InstancePort": "80",
+          "Protocol": "HTTP"
+        }],
+        "HealthCheck": {
+          "HealthyThreshold": "2",
+          "Interval": "10",
+          "Target": "HTTP:80/",
+          "Timeout": "5",
+          "UnhealthyThreshold": "2"
+        }
+      }
+    },
+    "AviPostDB" : {
+      "Type" : "AWS::RDS::DBInstance",
+      "Properties" : {
+        "AllocatedStorage" : 20,
+        "AllowMajorVersionUpgrade" : false,
+        "AutoMinorVersionUpgrade" : false,
+        "DBInstanceClass" : "db.t2.micro",
+        "DBInstanceIdentifier" : "avipostdb",
+        "DBName" : "avipost",
+        "VPCSecurityGroups" : [ { "Fn::GetAtt": [ "DBSecurityGroup", "GroupId" ] } ],
+        "Engine" : "postgres",
+        "EngineVersion" : "9.4.5",
+        "MasterUsername" : { "Ref" : "DBUser" },
+        "MasterUserPassword" : { "Ref" : "DBPassword" },
+        "MultiAZ" : false,
+        "Port" : "5432"
+      },
+      "DeletionPolicy" : "Snapshot"
+    },
+    "DBSecurityGroup" : {
+      "Type" : "AWS::EC2::SecurityGroup",
+      "Properties" : {
+        "GroupDescription" : "Allow inbound access from web instances",
+        "SecurityGroupIngress" : [
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "5432",
+            "ToPort" : "5432",
+            "SourceSecurityGroupName" : { "Ref" : "ClusterSecurityGroup" }
+          }
+        ]
+      }
+    },
+    "ClusterAutoScalingGroup": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "Properties": {"AvailabilityZones": {"Fn::GetAZs": ""},
+        "LaunchConfigurationName": {"Ref": "ClusterLaunchConfig"},
+        "MinSize": "1",
+        "MaxSize": "1",
+        "DesiredCapacity": {"Ref": "ClusterSize"},
+        "Tags": [{
+          "Key": "Name",
+          "Value": {"Fn::Join": ["", ["ECS - ", {"Ref": "AWS::StackName"}]]},
+          "PropagateAtLaunch": true
+        }]
+      }
+    },
+    "ClusterLaunchConfig": {
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+      "Properties": {
+        "ImageId": {"Fn::FindInMap": ["RegionToECSOptimizedAMI", {"Ref": "AWS::Region"}, "AMI"]},
+        "InstanceType": {"Ref": "ClusterInstanceType"},
+        "IamInstanceProfile": "ecsInstanceRole",
+        "KeyName": {"Ref": "KeyName"},
+        "SecurityGroups": [{"Ref": "ClusterSecurityGroup"}],
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash\n",
+                "echo ECS_CLUSTER=", {"Ref": "Cluster"}, " >> /etc/ecs/ecs.config\n"
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "Cluster": {
+      "Type": "AWS::ECS::Cluster"
+    },
+    "ClusterSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Allow inbound access to Cluster (80, 22)",
+        "SecurityGroupIngress": [{
+          "IpProtocol": "tcp",
+          "FromPort": "80",
+          "ToPort": "80",
+          "SourceSecurityGroupOwnerId": {"Fn::GetAtt": ["ApiServiceELB", "SourceSecurityGroup.OwnerAlias"]},
+          "SourceSecurityGroupName": {"Fn::GetAtt" : ["ApiServiceELB", "SourceSecurityGroup.GroupName"]}
+        }, {
+          "IpProtocol": "tcp",
+          "FromPort": "22",
+          "ToPort": "22",
+          "CidrIp": "0.0.0.0/0"
+        }]
+      }
+    },
+    "ApiServiceTaskDefinition": {
+      "Type": "AWS::ECS::TaskDefinition",
+      "Properties": {
+        "ContainerDefinitions": [{
+          "Name": "avipost-api-service",
+          "Image": "sunforest/avipost-api:1.0",
+          "Memory": 250,
+          "Cpu": 256,
+          "PortMappings": [{
+            "HostPort": 80,
+            "ContainerPort": 80
+          }],
+          "Environment": [
+            {"Name": "SECRET_KEY", "Value": { "Ref" : "SecretKey" }},
+            {"Name": "DB_NAME", "Value": { "Ref" : "DBName" }},
+            {"Name": "DB_USER", "Value": { "Ref" : "DBUser" }},
+            {"Name": "DB_PASSWORD", "Value": { "Ref" : "DBPassword" }},
+            {"Name": "DB_ENDPOINT", "Value": { "Fn::GetAtt": [ "AviPostDB", "Endpoint.Address" ] }}
+          ],
+          "Essential": true
+        }]
+      }
+    },
+    "ApiService": {
+      "Type": "AWS::ECS::Service",
+      "Properties": {
+        "Cluster": {"Ref": "Cluster"},
+        "DesiredCount": {"Ref": "ClusterSize"},
+        "LoadBalancers": [{
+          "ContainerName": "avipost-api-service",
+          "ContainerPort": 80,
+          "LoadBalancerName": {"Ref": "ApiServiceELB"}
+        }],
+        "Role": {"Ref": "ECSServiceRole"},
+        "TaskDefinition": {"Ref": "ApiServiceTaskDefinition"}
+      }
+    },
+    "ECSServiceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "ecs.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": "ecs-service",
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "elasticloadbalancing:Describe*",
+                    "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
+                    "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
+                    "ec2:Describe*",
+                    "ec2:AuthorizeSecurityGroupIngress"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "URL": {
+      "Description": "The URL of the 'count' sample service",
+      "Value": {"Fn::Join": ["", ["http://", {"Fn::GetAtt": ["ApiServiceELB", "DNSName"]}]]}
+    }
+  }
+}
