@@ -1,18 +1,16 @@
 from .base import *
 
-# TODO: set the database parameters
+SECRET_KEY = get_env_variable('SECRET_KEY')
 
-# ALLOWED_HOSTS = ["52.16.214.13", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["*"]
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-#         'NAME': 'postgres',
-#         'USER': 'postcard_admin',
-#         'PASSWORD': get_env_variable('DB_PASSWORD'),
-#         'HOST': 'postcarddb.cqlnuay9niw1.eu-west-1.rds.amazonaws.com',
-#         'PORT': '5432'
-#     }
-# }
-
-# SECRET_KEY = get_env_variable('SECRET_KEY')
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': get_env_variable('DB_NAME'),
+        'USER': get_env_variable('DB_USER'),
+        'PASSWORD': get_env_variable('DB_PASSWORD'),
+        'HOST': get_env_variable('DB_ENDPOINT'),
+        'PORT': '5432'
+    }
+}

@@ -17,7 +17,7 @@
     },
     "DBName": {
       "Type": "String",
-      "Default": "avipost-db"
+      "Default": "avipost"
     },
     "SecretKey": {
       "Type": "String",
@@ -181,7 +181,7 @@
       "Type": "AWS::ECS::Service",
       "Properties": {
         "Cluster": {"Ref": "Cluster"},
-        "DesiredCount": {"Ref": "ClusterSize"},
+        "DesiredCount": 0,
         "LoadBalancers": [{
           "ContainerName": "avipost-api-service",
           "ContainerPort": 80,

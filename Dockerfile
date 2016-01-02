@@ -17,6 +17,7 @@ RUN pip install -r requirements/prod.txt
 
 # restart nginx to load the config
 RUN service nginx stop
+CMD deployment/cmd.sh
 
-CMD supervisord -c /etc/supervisord.conf -n
+# CMD supervisord -c /etc/supervisord.conf -n
 
