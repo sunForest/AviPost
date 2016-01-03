@@ -43,6 +43,11 @@ def load_postcards(user_name, count):
                 '{0},{1}'.format(user_name, count))
 
 
+def load_messengers():
+    """ load messengers """
+    exec_manage('fixture', '_messengers')
+
+
 def file_path(file_name):
     return os.path.join(
         os.path.dirname(os.path.realpath(__file__)),
@@ -57,8 +62,9 @@ def helpers(context):
 
     return namedtuple(
         'Helpers', [
-            'url', 'file_path', 'load_postcards',
+            'url', 'file_path', 'load_postcards', 'load_messengers',
             'clean_db', 'setup_oauth', 'create_test_user']
     )(
-        url, file_path, load_postcards, clean_db, setup_oauth, create_test_user
+        url, file_path, load_postcards, load_messengers,
+        clean_db, setup_oauth, create_test_user
     )

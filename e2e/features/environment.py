@@ -12,6 +12,7 @@ def before_all(context):
 def before_scenario(context, _):
     context.helpers.clean_db()
     context.helpers.setup_oauth()
+    context.helpers.load_messengers()
 
 
 def after_scenario(context, _):

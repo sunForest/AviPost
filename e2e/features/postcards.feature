@@ -54,7 +54,10 @@ Feature: /postcards
             """
             {
                 "message": "Hello with image",
-                "receiver": "<Jerry's id>"
+                "receiver": "<Jerry's id>",
+                "longitude": 0,
+                "latitude": 0,
+                "messenger": 1
             } 
             """
         Then request will success for 201
