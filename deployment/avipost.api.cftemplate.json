@@ -159,7 +159,7 @@
       "Properties": {
         "ContainerDefinitions": [{
           "Name": "avipost-api-service",
-          "Image": "sunforest/avipost-api:1.0",
+          "Image": "sunforest/avipost",
           "Memory": 250,
           "Cpu": 256,
           "PortMappings": [{
