@@ -4,9 +4,10 @@ set -e
 
 if [ "$ENV" = 'ADMIN' ]; then
    echo "setup api server ..."
-   python avipost/manage.py migrate --settings=avipost.settings.prod
-   python avipost/manage.py loaddata avipost/contrib/management/commands/user.json --settings=avipost.settings.prod
-   python avipost/manage.py loaddata avipost/contrib/management/commands/app.json --settings=avipost.settings.prod
+   export DJANGO_SETTINGS_MODULE="avipost.settings.prod"
+   python avipost/manage.py migrate 
+   python avipost/manage.py fixture _oauth
+   python avipost/manage.py fixture _users --par dev,dev_token
 else
    echo "running production server..."
    supervisord -c /etc/supervisord.conf -n
