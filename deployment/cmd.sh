@@ -9,6 +9,7 @@ if [ "$ENV" = 'ADMIN' ]; then
    python avipost/manage.py loaddata avipost/contrib/management/commands/usersDev.json
    python avipost/manage.py loaddata avipost/contrib/management/commands/app.json
    python avipost/manage.py loaddata avipost/contrib/management/commands/token.json
+   python avipost/manage.py loaddata avipost/contrib/management/commands/messenger.json
 else
    echo "running production server..."
    supervisord -c /etc/supervisord.conf -n
