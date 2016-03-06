@@ -10,8 +10,10 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from unipath import Path
+
 from django.core.exceptions import ImproperlyConfigured
+
+from unipath import Path
 
 
 def get_env_variable(var_name):

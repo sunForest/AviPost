@@ -14,3 +14,19 @@ DATABASES = {
         'PORT': '5432'
     }
 }
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'ERROR',
+        }
+    },
+}

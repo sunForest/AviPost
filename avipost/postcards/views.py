@@ -1,6 +1,7 @@
-from rest_framework import viewsets
 from rest_framework import permissions
+from rest_framework import viewsets
 from rest_framework.parsers import FileUploadParser, JSONParser
+
 from .models import Postcard
 from .serializers import PostcardReadSerializer, PostcardWriteSerializer
 
@@ -17,6 +18,7 @@ class PostcardViewSet(viewsets.ModelViewSet):
         return Postcard.objects.filter(receiver=user)
 
     def perform_create(self, serializer):
+
         serializer.save(sender=self.request.user)
 
     parser_classes = (FileUploadParser, JSONParser,)
