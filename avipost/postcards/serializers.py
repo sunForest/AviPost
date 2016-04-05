@@ -18,8 +18,10 @@ class PostcardReadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Postcard
-        fields = ('message', 'cover', 'sender', 'latitude',
-                  'longitude', 'messenger')
+        fields = ('id', 'message', 'cover', 'sender', 'latitude',
+                  'longitude', 'messenger', 'image_height', 'image_width',
+                  'cover_thumbnail_large', 'cover_thumbnail_medium',
+                  'cover_thumbnail_small')
 
 
 class PostcardWriteSerializer(serializers.HyperlinkedModelSerializer):
