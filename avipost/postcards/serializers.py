@@ -7,7 +7,7 @@ class MessengerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Messenger
-        fields = ('name', 'portrait')
+        fields = ('id', 'name', 'portrait')
 
 
 class PostcardReadSerializer(serializers.ModelSerializer):
