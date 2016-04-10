@@ -5,6 +5,11 @@ from django.contrib.auth.models import User
 
 class MessengerSerializer(serializers.ModelSerializer):
 
+    portrait = serializers.SerializerMethodField('get_protrait_url')
+
+    def get_portrait_url(self, obj):
+        return self.context['view'].request.build_absolute_uri(obj.portrait.url)
+
     class Meta:
         model = Messenger
         fields = ('id', 'name', 'portrait')
@@ -14,6 +19,11 @@ class PostcardReadSerializer(serializers.ModelSerializer):
 
     sender = serializers.SlugRelatedField(read_only=True,
                                           slug_field='username')
+
+    cover = serializers.SerializerMethodField('get_cover_url')
+
+    def get_cover_url(self, obj):
+        return self.context['view'].request.build_absolute_uri(obj.cover.url)
     messenger = MessengerSerializer()
 
     class Meta:
