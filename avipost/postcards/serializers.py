@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class MessengerSerializer(serializers.ModelSerializer):
 
-    portrait = serializers.SerializerMethodField('get_protrait_url')
+    portrait = serializers.SerializerMethodField('get_portrait_url')
 
     def get_portrait_url(self, obj):
         return self.context['view'].request.build_absolute_uri(obj.portrait.url)
